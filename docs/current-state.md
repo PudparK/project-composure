@@ -16,7 +16,6 @@
 - Initial Expo app shell scaffolded.
 - TypeScript configured for the Expo app.
 - Expo Router tab navigation added for Capture, Inbox, Upcoming, and Spaces.
-- Placeholder feature screens added for Capture, Inbox, Upcoming, and Spaces.
 - Initial Supabase schema migration added for profiles, spaces, space memberships, and thoughts.
 - Initial membership-based RLS policies added.
 - New-user database trigger added to create a profile and initial Personal, Work, and Family spaces.
@@ -24,6 +23,13 @@
 - Authentication provider added for session loading, sign in, sign up, and sign out.
 - Minimal email/password auth gate added before the MVP tab shell.
 - Supabase environment example added.
+- Supabase data helpers added for spaces and thoughts.
+- Functional thought capture UI added with required text, required space, and optional quick review time.
+- Functional inbox list added for unprocessed thoughts.
+- Functional upcoming reviews list added for unprocessed thoughts with review times.
+- Mark processed flow added from active thought lists.
+- Functional spaces list added for the current user's spaces.
+- Loading, empty, and error states added for auth-gated data screens.
 
 ## In Progress
 
@@ -34,11 +40,8 @@
 - Supabase project setup.
 - Applying Supabase schema migrations to a real project.
 - Regenerating `package-lock.json` after the new auth dependencies are installed locally.
-- Functional thought capture UI.
-- Functional inbox thought list.
-- Functional upcoming reviews list.
-- Mark processed flow.
-- Empty, loading, and error states for real app data.
+- Runtime verification against a configured Supabase project.
+- More flexible custom review-time selection.
 
 ## Current Decisions
 
@@ -62,8 +65,9 @@
 - Future collaboration boundaries must not leak into MVP UX.
 - Thought type taxonomy could push the product toward task-manager complexity if introduced too early.
 - The initial schema migration has not been applied against a live Supabase project in this environment.
-- Auth cannot be verified until Supabase environment values are configured.
+- Auth and data flows cannot be verified until Supabase environment values are configured.
 - `package-lock.json` is temporarily stale because dependencies were added to `package.json` without running `npm install` in this connector-only environment.
+- The review-time UI only supports quick options for now: no review time, later today, or tomorrow morning.
 
 ## Current Folder Structure
 
@@ -116,12 +120,21 @@
 │   │   └── screens/
 │   │       └── InboxScreen.tsx
 │   ├── spaces/
-│   │   └── screens/
-│   │       └── SpacesScreen.tsx
+│   │   ├── screens/
+│   │   │   └── SpacesScreen.tsx
+│   │   └── services/
+│   │       └── spacesService.ts
+│   ├── thoughts/
+│   │   ├── components/
+│   │   │   └── ThoughtList.tsx
+│   │   ├── services/
+│   │   │   └── thoughtsService.ts
+│   │   └── types.ts
 │   └── upcoming/
 │       └── screens/
 │           └── UpcomingScreen.tsx
 ├── lib/
+│   ├── dates.ts
 │   ├── env.ts
 │   └── supabase.ts
 ├── package-lock.json
@@ -142,7 +155,6 @@
 
 ## Current Technical Debt
 
-- App feature screens are mostly placeholders; only auth has product behavior.
 - No automated tests exist yet.
 - Initial dependency install reports `npm audit` warnings that have not been evaluated in this shell slice.
 - Open product question remains: whether processed thoughts need a read-only history view in MVP.
