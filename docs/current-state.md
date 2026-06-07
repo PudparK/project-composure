@@ -17,6 +17,9 @@
 - TypeScript configured for the Expo app.
 - Expo Router tab navigation added for Capture, Inbox, Upcoming, and Spaces.
 - Placeholder feature screens added for Capture, Inbox, Upcoming, and Spaces.
+- Initial Supabase schema migration added for profiles, spaces, space memberships, and thoughts.
+- Initial membership-based RLS policies added.
+- New-user database trigger added to create a profile and initial Personal, Work, and Family spaces.
 
 ## In Progress
 
@@ -25,14 +28,14 @@
 ## Not Started
 
 - Supabase project setup.
-- Supabase schema migrations.
-- Authentication.
-- Initial space creation.
+- Applying Supabase schema migrations to a real project.
+- Supabase client setup in the Expo app.
+- Authentication UI and session handling.
 - Functional thought capture UI.
 - Functional inbox thought list.
 - Functional upcoming reviews list.
 - Mark processed flow.
-- Empty, loading, and error states.
+- Empty, loading, and error states for real app data.
 
 ## Current Decisions
 
@@ -55,6 +58,7 @@
 - Future collaboration boundaries must not leak into MVP UX.
 - Thought type taxonomy could push the product toward task-manager complexity if introduced too early.
 - Authentication scope may affect whether the first test build uses Supabase Auth or a local-only prototype.
+- The initial schema migration has not been applied against a live Supabase project in this environment.
 
 ## Current Folder Structure
 
@@ -113,6 +117,9 @@
 │   ├── product-agent.md
 │   ├── review-agent.md
 │   └── ticket-agent.md
+├── supabase/
+│   └── migrations/
+│       └── 20260607000000_initial_schema.sql
 └── tsconfig.json
 ```
 
@@ -123,3 +130,4 @@
 - Initial dependency install reports `npm audit` warnings that have not been evaluated in this shell slice.
 - Open product question remains: whether processed thoughts need a read-only history view in MVP.
 - Open implementation question remains: whether the first test build requires Supabase Auth or can start as a local-only prototype.
+- Supabase migration needs validation against a real Supabase project before depending on it from the client.
