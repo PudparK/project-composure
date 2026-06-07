@@ -117,6 +117,24 @@ Do not place:
 - Screen-specific sections.
 - Components that depend on a single feature's data shape.
 
+## supabase/
+
+Supabase project configuration and database migrations.
+
+Use for:
+
+- SQL migrations under `supabase/migrations/`.
+- Supabase local development configuration if introduced.
+- Seed data only when it supports repeatable local development.
+
+Do not place:
+
+- Client-side Supabase queries.
+- Feature business logic.
+- Generated database types unless the generation target is explicitly documented.
+
+Migrations should stay aligned with `docs/data-model.md` and settled decisions under `docs/decisions/`.
+
 ## Import Boundaries
 
 - `app/` may import from `features/`, `components/`, `lib/`, and `types/`.
@@ -132,6 +150,7 @@ Do not place:
 - Infrastructure belongs to `lib/` or `services/`.
 - Shared UI belongs to `components/`.
 - Cross-feature domain contracts belong to `types/`.
+- Database migrations belong to `supabase/migrations/`.
 - Route files should remain thin.
 
 When unsure, keep code closer to the feature first. Promote to shared folders only after real reuse appears.
