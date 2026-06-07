@@ -189,9 +189,10 @@ export function CaptureScreen() {
             ]}
           >
             <View style={styles.reviewIcon}>
-              <Text allowFontScaling={false} style={styles.reviewIconText}>
-                o
-              </Text>
+              <View style={styles.clockFace}>
+                <View style={styles.clockHourHand} />
+                <View style={styles.clockMinuteHand} />
+              </View>
             </View>
             <View>
               <Text allowFontScaling style={styles.reviewLabel}>
@@ -400,10 +401,30 @@ const styles = StyleSheet.create({
     borderRadius: 9999,
     backgroundColor: "#131b2e",
   },
-  reviewIconText: {
-    color: "#dae2fd",
-    fontSize: 18,
-    fontWeight: "600",
+  clockFace: {
+    width: 20,
+    height: 20,
+    borderRadius: 9999,
+    borderWidth: 2,
+    borderColor: "#dae2fd",
+  },
+  clockHourHand: {
+    position: "absolute",
+    top: 4,
+    left: 8,
+    width: 2,
+    height: 7,
+    borderRadius: 9999,
+    backgroundColor: "#dae2fd",
+  },
+  clockMinuteHand: {
+    position: "absolute",
+    top: 9,
+    left: 9,
+    width: 6,
+    height: 2,
+    borderRadius: 9999,
+    backgroundColor: "#dae2fd",
   },
   reviewLabel: {
     color: "#8e9196",
