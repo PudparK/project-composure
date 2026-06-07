@@ -32,6 +32,8 @@
 - Loading, empty, and error states added for auth-gated data screens.
 - MVP design system direction documented in `docs/design-system.md`.
 - Dark capture landing surface decision recorded.
+- Design system normalized around the Composure slate token set.
+- Capture screen restyled to the dark landing surface with prompt input, space pills, review bottom sheet, and soft Save action.
 
 ## In Progress
 
@@ -43,7 +45,7 @@
 - Applying Supabase schema migrations to a real project.
 - Regenerating `package-lock.json` after the new auth dependencies are installed locally.
 - Runtime verification against a configured Supabase project.
-- Applying the dark capture landing surface design to the implemented React Native screens.
+- Applying the design system to Auth, Inbox, Upcoming, and Spaces screens.
 - More flexible custom review-time selection.
 
 ## Current Decisions
@@ -71,7 +73,7 @@
 - The initial schema migration has not been applied against a live Supabase project in this environment.
 - Auth and data flows cannot be verified until Supabase environment values are configured.
 - `package-lock.json` is temporarily stale because dependencies were added to `package.json` without running `npm install` in this connector-only environment.
-- The review-time UI only supports quick options for now: no review time, later today, or tomorrow morning.
+- Capture now supports Later, Tonight, Tomorrow, and This Weekend; custom date/time selection remains deferred.
 
 ## Current Folder Structure
 
@@ -166,4 +168,4 @@
 - Open product question remains: whether processed thoughts need a read-only history view in MVP.
 - Supabase migration needs validation against a real Supabase project before depending on it from the client.
 - `package-lock.json` must be regenerated with `npm install` before `npm ci` can be expected to pass.
-- Implemented screens need to be restyled to match `docs/design-system.md`.
+- Auth, Inbox, Upcoming, and Spaces screens need to be restyled to match `docs/design-system.md`.
