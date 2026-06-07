@@ -16,6 +16,19 @@ Install dependencies:
 npm install
 ```
 
+Create a local environment file:
+
+```sh
+cp .env.example .env
+```
+
+Set the Supabase values in `.env`:
+
+```sh
+EXPO_PUBLIC_SUPABASE_URL=
+EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+```
+
 Start the Expo app:
 
 ```sh
