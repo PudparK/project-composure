@@ -4,24 +4,153 @@
 
 This document defines the visual and interaction direction for Composure's MVP UI surfaces.
 
-The design should make the app feel like a place to set a thought down, not a place to manage work.
+The system is anchored in emotional headroom. Composure should feel like a quiet room for mental unloading, not a busy workshop for task management.
 
 Product principle:
 
 Capture fast. Decide later. Return now.
 
-## Experience Qualities
+## Tokens
 
-Composure should feel:
+The tokens below are the source of truth for implementation. Use numeric React Native values in code, not CSS units.
 
-- Calm.
-- Lightweight.
-- Intentional.
-- Emotionally quiet.
-- Low-friction.
-- Private.
+### Colors
 
-The UI should avoid productivity-tool density. It should not feel like task creation, project management, coaching, analytics, or a notification system.
+```yaml
+surface: '#0b1326'
+surface-dim: '#0b1326'
+surface-bright: '#31394d'
+surface-container-lowest: '#060e20'
+surface-container-low: '#131b2e'
+surface-container: '#171f33'
+surface-container-high: '#222a3d'
+surface-container-highest: '#2d3449'
+on-surface: '#dae2fd'
+on-surface-variant: '#c4c7cc'
+inverse-surface: '#dae2fd'
+inverse-on-surface: '#283044'
+outline: '#8e9196'
+outline-variant: '#43474c'
+surface-tint: '#b8c8da'
+primary: '#b8c8da'
+on-primary: '#223240'
+primary-container: '#8292a3'
+on-primary-container: '#1c2b39'
+inverse-primary: '#50606f'
+secondary: '#bcc7de'
+on-secondary: '#263143'
+secondary-container: '#3e495d'
+on-secondary-container: '#aeb9d0'
+tertiary: '#b9c7df'
+on-tertiary: '#233144'
+tertiary-container: '#8392a8'
+on-tertiary-container: '#1c2a3d'
+error: '#ffb4ab'
+on-error: '#690005'
+error-container: '#93000a'
+on-error-container: '#ffdad6'
+primary-fixed: '#d4e4f6'
+primary-fixed-dim: '#b8c8da'
+on-primary-fixed: '#0d1d2a'
+on-primary-fixed-variant: '#394857'
+secondary-fixed: '#d8e3fb'
+secondary-fixed-dim: '#bcc7de'
+on-secondary-fixed: '#111c2d'
+on-secondary-fixed-variant: '#3c475a'
+tertiary-fixed: '#d5e3fc'
+tertiary-fixed-dim: '#b9c7df'
+on-tertiary-fixed: '#0d1c2e'
+on-tertiary-fixed-variant: '#3a485b'
+background: '#0b1326'
+on-background: '#dae2fd'
+surface-variant: '#2d3449'
+```
+
+The palette is monochromatic and deep. Use the slate-blue range to keep one emotional temperature, but avoid adding new decorative gradients or glows.
+
+### Typography
+
+Use the platform default font for MVP. Inter is the reference typeface, but do not add font-loading work unless a future decision calls for it.
+
+```yaml
+headline-lg:
+  fontSize: 24
+  fontWeight: '600'
+  lineHeight: 32
+  letterSpacing: 0
+headline-md:
+  fontSize: 20
+  fontWeight: '500'
+  lineHeight: 28
+  letterSpacing: 0
+body-lg:
+  fontSize: 17
+  fontWeight: '400'
+  lineHeight: 24
+  letterSpacing: 0
+body-md:
+  fontSize: 15
+  fontWeight: '400'
+  lineHeight: 22
+  letterSpacing: 0
+label-sm:
+  fontSize: 13
+  fontWeight: '500'
+  lineHeight: 18
+  letterSpacing: 0
+label-xs:
+  fontSize: 11
+  fontWeight: '600'
+  lineHeight: 16
+  letterSpacing: 0
+```
+
+Use `allowFontScaling={true}` unless there is a specific layout reason not to. Do not use negative letter spacing. Do not scale font size with viewport width.
+
+### Radius
+
+```yaml
+sm: 4
+default: 8
+md: 12
+lg: 16
+xl: 24
+full: 9999
+```
+
+Shapes are rounded, but structured. Avoid softening everything into decorative blobs.
+
+### Spacing
+
+```yaml
+base: 4
+xs: 4
+sm: 8
+md: 16
+lg: 24
+xl: 32
+gutter: 16
+margin-edge: 20
+```
+
+Use an 8px rhythm with a 4px sub-grid for fine alignment.
+
+## Brand And Style
+
+The aesthetic is refined minimalism.
+
+- Low friction: UI elements appear only when needed.
+- Intentionality: Every tap has a clear purpose.
+- Calmness: Deep surfaces and open space lower visual pressure.
+- Fast capture: The path from thought to storage is short.
+- Privacy: The app should feel personal and contained.
+
+## Experience Principles
+
+1. Capture fast: the thought input is the most accessible element.
+2. Process later: the app accepts raw thoughts without demanding task metadata.
+3. Space lightly: every thought still belongs to exactly one space, but space selection should feel like a gentle compartment choice.
+4. Return now: after save, the UI should recede and encourage the user to leave the app.
 
 ## Landing Capture Surface
 
@@ -29,7 +158,7 @@ The primary app surface is Capture.
 
 The landing capture screen should use a dark, quiet full-screen composition:
 
-- Deep navy background.
+- Deep slate background.
 - Large empty breathing room above the input.
 - Thought input as the dominant first action.
 - Placeholder: `What's on your mind?`
@@ -41,68 +170,30 @@ The landing capture screen should use a dark, quiet full-screen composition:
 
 The capture surface should communicate: write it down, choose where it belongs, decide when to see it again, and leave.
 
-## Color Tokens
-
-### Core
-
-- `surface.base`: `#081224`
-- `surface.raised`: `#202a3c`
-- `surface.subtle`: `#111a2d`
-- `surface.control`: `#131d31`
-- `surface.controlSelected`: `#d7e3f1`
-
-### Text
-
-- `text.primary`: `#e8eef8`
-- `text.secondary`: `#a4adbd`
-- `text.placeholder`: `#5f6879`
-- `text.inverse`: `#0b1627`
-
-### Lines And Borders
-
-- `border.strong`: `#d8e2ef`
-- `border.subtle`: `#29344a`
-
-### Actions
-
-- `action.primary`: `#d7e3f1`
-- `action.primaryPressed`: `#c3d2e4`
-- `action.quiet`: `#141e32`
-- `action.quietPressed`: `#1a263d`
-
-Use color sparingly. The palette should stay mostly dark navy, softened gray-blue, and pale blue action surfaces.
-
-## Typography
-
-Use the platform default font.
-
-- Screen prompt: 28-32, weight 700, line height 36-40.
-- Section label: 12, weight 700, uppercase.
-- Control text: 18-20, weight 400-500.
-- Body/list text: 16-18, weight 400.
-- Metadata: 12-14, weight 500.
-
-Do not use negative letter spacing. Do not scale type with viewport width.
-
-## Spacing
-
-Use generous spacing on capture and tighter spacing on review lists.
-
-- Screen horizontal padding: 24.
-- Capture top breathing room: large enough that the input begins below the visual midpoint on common phones.
-- Section gap: 16-24.
-- Control gap: 10-12.
-- Bottom sheet padding: 30 horizontal, 28 top.
-- Button min height: 56.
-- Pill min height: 50.
-
-## Components
+## Layout
 
 ### Screen Shell
 
-Capture should be full-bleed dark and mostly empty.
+Use an edge-to-edge container with `margin-edge` horizontal padding. Respect safe areas.
 
-List screens can reuse the same dark foundation, but may use slightly raised list items. Avoid large decorative panels.
+Mobile is single-column. On tablet, content width should cap near 600 and center to preserve a focused sheet-like feeling.
+
+### Capture Positioning
+
+The capture input should sit below the visual midpoint on common phones, with enough empty space above it to feel quiet. Avoid a conventional top-heavy form layout.
+
+## Elevation And Depth
+
+Avoid shadows. Communicate depth through tonal layers and subtle opacity.
+
+- Level 0: `background` as the canvas.
+- Level 1: `surface-container-low` for controls.
+- Level 2: `surface-container-high` for bottom sheets and raised surfaces.
+- Active: `primary` or a subtle surface tint.
+
+Transitions should be simple: opacity changes or vertical translations around 200ms. Avoid bouncy animations.
+
+## Components
 
 ### Thought Input
 
@@ -114,8 +205,8 @@ Rules:
 - No visible label above the input.
 - Large placeholder text.
 - Underline separator below the input.
-- Multiline input, but visually minimal.
-- Keep cursor and text high contrast enough to read comfortably.
+- Multiline input, visually minimal.
+- Text and cursor must remain readable on the dark surface.
 
 ### Space Selector
 
@@ -123,30 +214,29 @@ Spaces are gentle compartments, not projects.
 
 Rules:
 
-- Use pill controls.
-- Initial spaces: Personal, Work, Family.
+- Use pill controls for Personal, Work, and Family.
 - Selected state should be clear but quiet.
-- Do not add icons, counts, roles, or collaboration hints.
+- Do not add icons, counts, roles, sharing, or collaboration hints.
 
 ### Review Control
 
-Review time should stay optional.
+Review time stays optional.
 
 Rules:
 
-- Use a small clock affordance plus label/value text.
 - Default value: Later.
 - Do not imply reminders or notifications.
 - Do not ask for notification permission.
+- Present review choices in a bottom sheet.
 
-Review options for MVP:
+MVP choices:
 
 - Tonight.
 - Tomorrow.
 - This Weekend.
 - Later (Default).
 
-### Primary Action
+### Primary Button
 
 The Save action should be prominent but soft.
 
@@ -154,8 +244,8 @@ Rules:
 
 - Pale filled pill.
 - Label: Save.
-- Optional right arrow icon.
-- Disabled state should be visible but not noisy.
+- Optional right arrow if it can be implemented without a new icon dependency.
+- Disabled state should be visible but quiet.
 - Keep the button on the capture surface, not buried in a form footer.
 
 ### Bottom Sheet
@@ -164,12 +254,12 @@ The review picker uses a bottom sheet.
 
 Rules:
 
-- Raised navy surface.
+- Raised slate surface.
 - Top corners rounded.
 - Title: Review time.
 - Close affordance in the top right.
 - Large touch targets.
-- Selected option can use a pale filled row.
+- Selected option uses a pale filled row.
 - No calendar grid in MVP.
 
 ### Thought List Items
@@ -182,6 +272,17 @@ Rules:
 - Show space and review time metadata.
 - Mark processed action should be available but quiet.
 - Avoid checklists, priority markers, badges, streaks, or counts.
+- Do not add delete, move, edit, long-press menus, or archive actions in MVP.
+
+### Segmented Choices
+
+Use segmented choices only for small, immediate decisions.
+
+Rules:
+
+- Prefer a quiet track and tonal active state.
+- Avoid border-heavy segmented controls.
+- Do not use segments for task status or priority.
 
 ### Empty States
 
@@ -189,7 +290,7 @@ Empty states should reassure without celebrating.
 
 Examples:
 
-- Inbox: `Nothing waiting.`
+- Inbox: `The mind is clear.`
 - Upcoming: `No scheduled reviews.`
 - Spaces: `Your spaces are ready.`
 
@@ -199,11 +300,11 @@ Avoid playful rewards or productivity scoring.
 
 Errors should be plain and recoverable.
 
-Rules:
+Preferred copy:
 
-- State what failed.
-- Offer Retry when useful.
-- Do not use alarming colors as the dominant screen tone.
+- `Something went wrong. Let's try again.`
+
+Avoid technical error codes in UI copy unless needed for debugging.
 
 ### Loading States
 
@@ -214,6 +315,7 @@ Rules:
 - Small activity indicator.
 - Minimal copy.
 - Preserve screen structure where possible.
+- Avoid language like `Thinking` or AI-like processing states.
 
 ## Interaction Rules
 
@@ -223,7 +325,7 @@ Rules:
 - Do not ask users to classify beyond space.
 - Do not introduce tags, projects, priority, status, estimates, or recurring settings in MVP.
 - Use bottom sheets only for focused decisions.
-- Keep destructive or completion actions calm and reversible only if undo is implemented.
+- Haptics are future polish and should not be added until explicitly decided.
 
 ## Copy Rules
 
@@ -235,7 +337,7 @@ Prefer:
 - `Save`
 - `Review time`
 - `Later`
-- `Nothing waiting.`
+- `The mind is clear.`
 
 Avoid:
 
@@ -251,8 +353,9 @@ Avoid:
 - All interactive controls must have minimum 44x44 touch targets.
 - Text contrast must remain readable on the dark background.
 - Controls must expose button roles where possible.
-- Bottom sheet close and option rows must be keyboard/screen-reader navigable where supported.
+- Bottom sheet close and option rows must be screen-reader accessible where supported.
 - Do not rely on color alone for selected states.
+- Use system font scaling by default.
 
 ## MVP Anti-Patterns
 
