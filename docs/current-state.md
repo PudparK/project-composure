@@ -30,6 +30,8 @@
 - Mark processed flow added from active thought lists.
 - Functional spaces list added for the current user's spaces.
 - Loading, empty, and error states added for auth-gated data screens.
+- MVP design system direction documented in `docs/design-system.md`.
+- Dark capture landing surface decision recorded.
 
 ## In Progress
 
@@ -41,6 +43,7 @@
 - Applying Supabase schema migrations to a real project.
 - Regenerating `package-lock.json` after the new auth dependencies are installed locally.
 - Runtime verification against a configured Supabase project.
+- Applying the dark capture landing surface design to the implemented React Native screens.
 - More flexible custom review-time selection.
 
 ## Current Decisions
@@ -57,6 +60,7 @@
 - Collaboration UI is not part of the MVP.
 - Expo Router is used for the initial app navigation shell.
 - The first test build uses Supabase Auth instead of a local-only prototype.
+- The MVP UI should use the dark, minimal capture landing surface documented in `docs/design-system.md`.
 
 ## Known Risks
 
@@ -96,12 +100,14 @@
 │   ├── codebase-structure.md
 │   ├── current-state.md
 │   ├── data-model.md
+│   ├── design-system.md
 │   ├── decisions/
 │   │   ├── 001-space-model.md
 │   │   ├── 002-review-time-optional.md
 │   │   ├── 003-no-notifications-in-mvp.md
 │   │   ├── 004-initial-navigation-shell.md
-│   │   └── 005-supabase-auth-first-build.md
+│   │   ├── 005-supabase-auth-first-build.md
+│   │   └── 006-dark-capture-landing-surface.md
 │   ├── engineering-standards.md
 │   ├── definition-of-done.md
 │   ├── implementation-loop.md
@@ -160,3 +166,4 @@
 - Open product question remains: whether processed thoughts need a read-only history view in MVP.
 - Supabase migration needs validation against a real Supabase project before depending on it from the client.
 - `package-lock.json` must be regenerated with `npm install` before `npm ci` can be expected to pass.
+- Implemented screens need to be restyled to match `docs/design-system.md`.
