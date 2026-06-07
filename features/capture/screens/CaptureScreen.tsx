@@ -235,7 +235,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   detail: {
-    marginTop: -10,
     color: "#59645f",
     fontSize: 16,
     lineHeight: 22,
