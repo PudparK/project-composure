@@ -31,6 +31,7 @@ Feature-oriented product modules.
 
 Expected MVP features:
 
+- `auth`
 - `capture`
 - `inbox`
 - `upcoming`
