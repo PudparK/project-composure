@@ -74,6 +74,36 @@ create trigger thoughts_set_updated_at
 before update on public.thoughts
 for each row execute function public.set_updated_at();
 
+create or replace function public.is_space_member(target_space_id uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.space_memberships
+    where space_memberships.space_id = target_space_id
+      and space_memberships.user_id = auth.uid()
+  );
+$$;
+
+create or replace function public.owns_space(target_space_id uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.spaces
+    where spaces.id = target_space_id
+      and spaces.owner_id = auth.uid()
+  );
+$$;
+
 alter table public.profiles enable row level security;
 alter table public.spaces enable row level security;
 alter table public.space_memberships enable row level security;
@@ -93,14 +123,7 @@ with check (id = auth.uid());
 create policy "Users can read spaces they belong to"
 on public.spaces for select
 to authenticated
-using (
-  exists (
-    select 1
-    from public.space_memberships
-    where space_memberships.space_id = spaces.id
-      and space_memberships.user_id = auth.uid()
-  )
-);
+using (public.is_space_member(id));
 
 create policy "Users can create their own spaces"
 on public.spaces for insert
@@ -116,74 +139,30 @@ with check (owner_id = auth.uid());
 create policy "Users can read memberships for their spaces"
 on public.space_memberships for select
 to authenticated
-using (
-  user_id = auth.uid()
-  or exists (
-    select 1
-    from public.spaces
-    where spaces.id = space_memberships.space_id
-      and spaces.owner_id = auth.uid()
-  )
-);
+using (user_id = auth.uid() or public.owns_space(space_id));
 
 create policy "Owners can create memberships for their spaces"
 on public.space_memberships for insert
 to authenticated
-with check (
-  exists (
-    select 1
-    from public.spaces
-    where spaces.id = space_memberships.space_id
-      and spaces.owner_id = auth.uid()
-  )
-);
+with check (public.owns_space(space_id));
 
 create policy "Users can read thoughts in their spaces"
 on public.thoughts for select
 to authenticated
-using (
-  exists (
-    select 1
-    from public.space_memberships
-    where space_memberships.space_id = thoughts.space_id
-      and space_memberships.user_id = auth.uid()
-  )
-);
+using (public.is_space_member(space_id));
 
 create policy "Users can create thoughts in their spaces"
 on public.thoughts for insert
 to authenticated
-with check (
-  created_by = auth.uid()
-  and exists (
-    select 1
-    from public.space_memberships
-    where space_memberships.space_id = thoughts.space_id
-      and space_memberships.user_id = auth.uid()
-  )
-);
+with check (created_by = auth.uid() and public.is_space_member(space_id));
 
 create policy "Users can update thoughts in their spaces"
 on public.thoughts for update
 to authenticated
-using (
-  exists (
-    select 1
-    from public.space_memberships
-    where space_memberships.space_id = thoughts.space_id
-      and space_memberships.user_id = auth.uid()
-  )
-)
-with check (
-  exists (
-    select 1
-    from public.space_memberships
-    where space_memberships.space_id = thoughts.space_id
-      and space_memberships.user_id = auth.uid()
-  )
-);
+using (public.is_space_member(space_id))
+with check (public.is_space_member(space_id));
 
-create or replace function public.create_initial_spaces_for_user(user_id uuid)
+create or replace function public.create_initial_spaces_for_user(app_user_id uuid)
 returns void
 language plpgsql
 security definer
@@ -195,22 +174,22 @@ declare
   family_space_id uuid;
 begin
   insert into public.spaces (owner_id, name, kind)
-  values (user_id, 'Personal', 'personal')
+  values (app_user_id, 'Personal', 'personal')
   returning id into personal_space_id;
 
   insert into public.spaces (owner_id, name, kind)
-  values (user_id, 'Work', 'work')
+  values (app_user_id, 'Work', 'work')
   returning id into work_space_id;
 
   insert into public.spaces (owner_id, name, kind)
-  values (user_id, 'Family', 'family')
+  values (app_user_id, 'Family', 'family')
   returning id into family_space_id;
 
   insert into public.space_memberships (space_id, user_id, role)
   values
-    (personal_space_id, user_id, 'owner'),
-    (work_space_id, user_id, 'owner'),
-    (family_space_id, user_id, 'owner');
+    (personal_space_id, app_user_id, 'owner'),
+    (work_space_id, app_user_id, 'owner'),
+    (family_space_id, app_user_id, 'owner');
 end;
 $$;
 
